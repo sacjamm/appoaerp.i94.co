@@ -95,3 +95,5 @@ define('EVENT_PRIORITY_HIGH', 10);
 
 //minhas constantes 
 define('APP_NAME', 'ERP SaaS');
+define('TEMPLATE', 'adminlte');
+define('SPINNER', true);

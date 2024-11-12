@@ -19,8 +19,8 @@ use Psr\Log\LoggerInterface;
  *
  * For security be sure to declare any new methods as protected or private.
  */
-abstract class BaseController extends Controller
-{
+abstract class BaseController extends Controller {
+
     /**
      * Instance of the main Request object.
      *
@@ -35,7 +35,7 @@ abstract class BaseController extends Controller
      *
      * @var list<string>
      */
-    protected $helpers = [];
+    protected $helpers = ['form'];
 
     /**
      * Be sure to declare properties for any property fetch you initialized.
@@ -46,13 +46,34 @@ abstract class BaseController extends Controller
     /**
      * @return void
      */
-    public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
-    {
+    
+    public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger) {
         // Do Not Edit This Line
+        helper('permission');
+        $currentUrl = current_url();
+        $params = separate_url_params($currentUrl);
+
+        if (!session()->get('loggedIn')) {
+            if (isset($params[1]) && $params[1] === 'auth') {
+                
+            } else {
+                return redirect()->to('/dashboard');
+            }
+        }
         parent::initController($request, $response, $logger);
-
         // Preload any models, libraries, etc, here.
-
         // E.g.: $this->session = \Config\Services::session();
+    }
+
+    // Função para verificar se o usuário logado é admin
+    protected function is_admin() {
+        $tipoUsuario = session()->get('nivel');
+        return ($tipoUsuario === 'A');
+    }
+
+    // Função para verificar se o usuário logado é usuário comum
+    protected function is_user() {
+        $tipoUsuario = session()->get('nivel');
+        return ($tipoUsuario === 'U');
     }
 }

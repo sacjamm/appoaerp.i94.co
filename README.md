@@ -58,3 +58,89 @@ Additionally, make sure that the following extensions are enabled in your PHP:
 - json (enabled by default - don't turn it off)
 - [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
 - [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+
+Adicionar campo 'id' na tabela de usuario com auto increment
+criar novas tabelas no banco de dados
+
+-- Tabela para armazenar os papéis de usuário
+CREATE TABLE roles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    role_name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Tabela para armazenar as permissões
+CREATE TABLE permissions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    permission_name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Tabela intermediária para relacionar papéis com permissões
+CREATE TABLE role_permissions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    role_id INT NOT NULL,
+    permission_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE,
+    FOREIGN KEY (permission_id) REFERENCES permissions(id) ON DELETE CASCADE
+);
+
+-- Tabela intermediária para associar usuários aos papéis
+CREATE TABLE user_roles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    role_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
+);
+
+criar campo id primary auto_increment na tabela usuarios e criar novos campos:
+created_at, updated_at, deleted_at, permissao_id, permissoes
+alterar tipodo campo senha para text
+
+
+tornar campo CodigoEmpresa da tabela empresa auto_increment, e adicionar novos campos:
+NumeroEmpresa, ComplementoEmpresa,BairroEmpresa, CidadeEmpresa
+
+tornar campo CodigoCentroCusto da tabela centrodecusto auto_increment
+
+tornar campo CodigoProdutoGrupo da tabela produtogrupo auto_increment
+
+tornar campo CodigoProduto da tabela produto auto_increment
+
+tornar campo CodigoForn da tabela fornecedor auto_increment
+criar campos CidadeForn e BairroForn na tabela fornecedor
+
+tornar o campo CodigoAssocForma da tabela assocforma auto_increment
+
+tornar o campo CodigoMotivoCancel da tabela motivocancel auto_increment 
+
+tornar o campo CodigoCompra da tabela compra auto_increment 
+
+tornar o campo CodigoPublicacaoTipo da publicacaotipo motivocancel auto_increment 
+e colocar o tipo AssinaturaTipo como definido = 0
+
+tornar o campo CodigoEditora  da tabela editora auto_increment
+tornar o campo CodigoAssocTipo  da tabela assoctipo auto_increment
+
+
+remover chaves primarias da tabela compraproduto e criar um novo campo 'id' auto_increment chave primaria
+remover chaves primarias da tabela compraparcela e criar um novo campo 'id' auto_increment chave primaria
+
+roda esse comando para centro de custo: ALTER TABLE `centrocusto` CHANGE `NomeCentroCusto` `NomeCentroCusto` VARCHAR(250) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+
+tornar campo CodigoAssoc na tabela associado, chave primaria e auto_increment
+criar novos campos na tabela associado, BairroAssoc, CidadeAssoc, BairroRemAssoc, CidadeRemAssoc
+criar campo id primary auto_increment na tabela de banco
+criar tabela permissoes:
+CREATE TABLE `permissoes` (
+  `idPermissao` int(11) NOT NULL,
+  `nome` varchar(80) NOT NULL,
+  `permissoes` text,
+  `situacao` tinyint(1) DEFAULT NULL,
+  `data` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
